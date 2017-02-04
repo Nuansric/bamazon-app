@@ -49,8 +49,8 @@ function newDept(){
 
 		name: "departmentName",
 		type: "input",
-		message: "What is the new department name?"
-		, validate: function(value) {
+		message: "What is the new department name?",
+		validate: function(value) {
 		  if ((value) === '') {
 		    return false;
 		  }
@@ -60,8 +60,8 @@ function newDept(){
 
 		name: "overHead",
 		type: "input",
-		message: "What is the department over-head cost??"
-		, validate: function(value) {
+		message: "What is the department over-head cost??",
+		validate: function(value) {
 		  if (isNaN(value) === false) {
 		    return true;
 		  }
@@ -70,8 +70,8 @@ function newDept(){
 	},{
 		name: "saleTotal",
 		type: "input",
-		message: "How much does the new department sale so far?"
-		, validate: function(value) {
+		message: "How much does the new department sale so far?",
+		validate: function(value) {
 		  if (isNaN(value) === false) {
 		    return true;
 		  }

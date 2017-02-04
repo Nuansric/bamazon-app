@@ -99,7 +99,7 @@ connection.query("SELECT * FROM products", function(err, res){
 	//wait 1 second before calling th e startShopping questions
 	delayTimer = setTimeout(clearDelay, 1 * 1000);
 
-})//database
+});//database
 
 } //displayTable
 
@@ -121,8 +121,8 @@ function startShopping(){
 
 		name: "itemID",
 		type: "input",
-		message: "What is the ID of the item you wish to buy?"
-		, validate: function(value) { //validate to make sure the answer is a number
+		message: "What is the ID of the item you wish to buy?",
+		validate: function(value) { //validate to make sure the answer is a number
 		  if (isNaN(value) === false) {
 		    return true;
 		  }
@@ -132,8 +132,8 @@ function startShopping(){
 
 		name: "amount",
 		type: "input",
-		message: "What is the quantity you wish to buy?"
-		, validate: function(value) {
+		message: "What is the quantity you wish to buy?",
+		validate: function(value) {
 		  if (isNaN(value) === false) {
 		    return true;
 		  }
@@ -147,7 +147,7 @@ function startShopping(){
 		var product = findProductByID(selectedItem);
 
 			//if the object is returned, item is found!!
-			if(product != null && product != undefined){
+			if(product !== null && product !== undefined){
 
 				//local variable from the database responses
 				var initialStock = product.stock_quantity;
@@ -194,7 +194,7 @@ function startShopping(){
 				displayTable();
 				return false;
 			}
-	})//then
+	});//then
 
 }//startShopping
 

@@ -10,7 +10,7 @@ var delayTimer;
 //mySQL
 var connection = mysql.createConnection({
 	host: "localhost",
-	port: 3306,
+	//port: 3306,
 	user: "root",
 	password: importedPassword.mySQLKeys.password,
 	database: "bamazon_db"
@@ -133,7 +133,7 @@ function addInventory(){
 				//if the user selected item matched the item in the database
 				if(res[i].item_id === selectedItem){
 
-					//update the database
+					//update the database when the item id matches
 					connection.query("UPDATE products SET ? WHERE ?", [{stock_quantity: updatedStock }, {item_id: selectedItem }], function(err, res){
 						
 						if (err) throw err;
@@ -153,6 +153,7 @@ function addInventory(){
 
 
 }
+//question set of new product  information
 function addProduct(){
 	inquirer.prompt([{
 
@@ -197,12 +198,13 @@ function addProduct(){
 		  return false;
 		}
 	}]).then(function(answer){
-
+		//local variables from manager answer
 		var productName = answer.itemName;
 		var productDept = answer.department;
 		var quantity = parseInt(answer.amountAdded);
 		var itemPrice = parseFloat(answer.itemPrice);
 
+		//insert new row into the database
 		connection.query("INSERT INTO products SET ?", [{product_name: productName, department_name: productDept, price: itemPrice, stock_quantity: quantity}], function(err, res){
 
 			if (err) throw err;

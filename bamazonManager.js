@@ -1,9 +1,13 @@
+//Dependencies
 var mysql = require("mysql");
 var inquirer = require("inquirer");
 var importedPassword = require("./key.js");
 var table =  require("console.table");
+
+//global variables
 var delayTimer;
 
+//mySQL
 var connection = mysql.createConnection({
 	host: "localhost",
 	port: 3306,
@@ -12,17 +16,20 @@ var connection = mysql.createConnection({
 	database: "bamazon_db"
 });
 
+//text the connnection
 connection.connect(function(err) {
+	
 	if (err) throw err;
-	// console.log("connected as id " + connection.threadId);
 
 });
 
+//questions of options for the manager
 function managerChoice(){
 
-		clearTimeout(delayTimer);
+	//clear timer
+	clearTimeout(delayTimer);
 
-		inquirer.prompt([{
+	inquirer.prompt([{
 
 		name: "choice",
 		type: "list",
@@ -52,35 +59,50 @@ function managerChoice(){
 
 }//managerChoice
 
+//display the product table 
 function viewProduct(){
 	connection.query("SELECT * FROM products", function(err, res){
 		if(err) throw err;
 		console.log("\n");
+		//display the table
 		console.table(res);
 		console.log("\n");
 		
 	});
 
+	//wait 1 second before calling the manager questions
 	delayTimer = setTimeout(managerChoice, 1 * 1000);
 
 }
 
+//display table of products that is low in quantity (less than 5)
 function viewLowInventory(){
+
 	connection.query("SELECT * FROM products WHERE stock_quantity<=5", function(err, res){
 		if(err) throw err;
 		console.log("\n");
+		//dispaly table
 		console.table(res);
 		console.log("\n");
 	});
 
+	//wait 1 second before calling the manager questions
 	delayTimer = setTimeout(managerChoice, 1 * 1000);
 }
+
+//display questions set requesting the product info
 function addInventory(){
 	inquirer.prompt([{
 
 		name: "itemID",
 		type: "input",
 		message: "What is the item ID that you want to add?"
+		, validate: function(value) {
+		  if (isNaN(value) === false) {
+		    return true;
+		  }
+		  return false;
+		}
 	},{
 		name: "amount",
 		type: "input",
@@ -93,25 +115,32 @@ function addInventory(){
 		}
 	}]).then(function(answer){
 
+		//local variables based on user answer
 		var selectedItem = parseInt(answer.itemID);
 		var amountAdded = parseInt(answer.amount);
 
+		//get the product table from the database
 		connection.query("SELECT * FROM products", function(err, res){
 
 			if(err) throw err;
 
+			//looking through the response
 			for (var i=0; i < res.length; i++){
-
+				//local variable
 				var initialStock = res[i].stock_quantity;
 				var updatedStock = amountAdded + initialStock;
 
+				//if the user selected item matched the item in the database
 				if(res[i].item_id === selectedItem){
 
+					//update the database
 					connection.query("UPDATE products SET ? WHERE ?", [{stock_quantity: updatedStock }, {item_id: selectedItem }], function(err, res){
 						
 						if (err) throw err;
+						
 						console.log("Inventory Updated!");
 
+						//display the table
 						viewProduct();
 					
 					});//update database

@@ -1,0 +1,29 @@
+{
+  "name": "bamazon",
+  "version": "1.0.0",
+  "description": "npm packages for Bamazon app",
+  "main": "bamazon.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nuansric/Bamazon.git"
+  },
+  "keywords": [
+    "inquirer",
+    "CLI-table"
+  ],
+  "author": "Chanita Nuansri",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Nuansric/Bamazon/issues"
+  },
+  "homepage": "https://github.com/Nuansric/Bamazon#readme",
+  "dependencies": {
+    "cli-table": "^0.3.1",
+    "console.table": "^0.8.0",
+    "inquirer": "^3.0.1",
+    "mysql": "^2.13.0"
+  }
+}

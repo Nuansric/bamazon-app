@@ -55,7 +55,7 @@ function managerChoice(){
 		
 		}
 
-	})//then
+	});//then
 
 }//managerChoice
 
@@ -90,14 +90,29 @@ function viewLowInventory(){
 	delayTimer = setTimeout(managerChoice, 1 * 1000);
 }
 
+//updating the database based on user input
+function updateDatabase(updatedStock, selectedItem){
+
+	connection.query("UPDATE products SET ? WHERE ?", [{stock_quantity: updatedStock }, {item_id: selectedItem }], function(err, res){
+						
+		if (err) throw err;
+						
+		console.log("Inventory Updated!");
+
+		//display the table
+		viewProduct();
+					
+	});//update database
+}
+
 //display questions set requesting the product info
 function addInventory(){
 	inquirer.prompt([{
 
 		name: "itemID",
 		type: "input",
-		message: "What is the item ID that you want to add?"
-		, validate: function(value) {
+		message: "What is the item ID that you want to add?",
+		validate: function(value) {
 		  if (isNaN(value) === false) {
 		    return true;
 		  }
@@ -106,8 +121,8 @@ function addInventory(){
 	},{
 		name: "amount",
 		type: "input",
-		message: "What is the quantity that you would like to add?"
-		, validate: function(value) {
+		message: "What is the quantity that you would like to add?",
+		validate: function(value) {
 		  if (isNaN(value) === false) {
 		    return true;
 		  }
@@ -134,22 +149,13 @@ function addInventory(){
 				if(res[i].item_id === selectedItem){
 
 					//update the database when the item id matches
-					connection.query("UPDATE products SET ? WHERE ?", [{stock_quantity: updatedStock }, {item_id: selectedItem }], function(err, res){
-						
-						if (err) throw err;
-						
-						console.log("Inventory Updated!");
-
-						//display the table
-						viewProduct();
-					
-					});//update database
+					updateDatabase(updatedStock, selectedItem);
 				}//if
 			}//loop
 
 		});//database
 
-	})//then
+	});//then
 
 
 }
@@ -159,9 +165,9 @@ function addProduct(){
 
 		name: "itemName",
 		type: "input",
-		message: "What is the name of the product that you want to add?"
-		, validate: function(value) {
-		  if (value == '') {
+		message: "What is the name of the product that you want to add?",
+		validate: function(value) {
+		  if (value === '') {
 		    return false;
 		  }
 		  return true;
@@ -169,9 +175,9 @@ function addProduct(){
 	},{
 		name: "department",
 		type: "input",
-		message: "Which department does this product belongs to?"
-		, validate: function(value) {
-		  if (value == '') {
+		message: "Which department does this product belongs to?",
+		validate: function(value) {
+		  if (value === '') {
 		    return false;
 		  }
 		  return true;
@@ -179,8 +185,8 @@ function addProduct(){
 	},{
 		name: "itemPrice",
 		type: "input",
-		message: "What is the asking price of this item?"
-		, validate: function(value) {
+		message: "What is the asking price of this item?",
+		validate: function(value) {
 		  if (isNaN(value) === false) {
 		    return true;
 		  }
@@ -190,8 +196,8 @@ function addProduct(){
 	},{
 		name: "amountAdded",
 		type: "input",
-		message: "What is the quantity that you would like to add?"
-		, validate: function(value) {
+		message: "What is the quantity that you would like to add?",
+		validate: function(value) {
 		  if (isNaN(value) === false) {
 		    return true;
 		  }
